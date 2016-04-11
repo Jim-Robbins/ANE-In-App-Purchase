@@ -44,6 +44,8 @@ package com.freshplanet.ane.AirInAppPurchase
 
 		public static const RESTORE_INFO_RECEIVED:String = "restoreInfoReceived";
 		
+		public static const IAP_READY:String = "iapReady";
+		
 		// json encoded string (if any)
 		public var data:String;
 		

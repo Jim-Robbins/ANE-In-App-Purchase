@@ -199,6 +199,9 @@ package com.freshplanet.ane.AirInAppPurchase
 			var e:InAppPurchaseEvent;
 			switch(event.code)
 			{
+				case "IAP_READY":
+					e = new InAppPurchaseEvent(InAppPurchaseEvent.IAP_READY);
+					break;
 				case "PRODUCT_INFO_RECEIVED":
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PRODUCT_INFO_RECEIVED, event.level);
 					break;
