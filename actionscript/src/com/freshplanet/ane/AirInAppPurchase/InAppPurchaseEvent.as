@@ -24,7 +24,7 @@ package com.freshplanet.ane.AirInAppPurchase
 	{
 		
 		// init -> check if previously purchases not being processed by the app
-		public static const PURCHASE_SUCCESSFULL:String = "purchaseSuccesfull";
+		public static const PURCHASE_SUCCEEDED:String = "purchaseSucceeded";
 		public static const PURCHASE_ERROR:String   	= "purchaseError";
 		
 		// user can make a purchase
@@ -37,14 +37,13 @@ package com.freshplanet.ane.AirInAppPurchase
 		// user cannot make a subscription
 		public static const SUBSCRIPTION_DISABLED:String = "subsDisabled";
 
-		
-		
 		public static const PRODUCT_INFO_RECEIVED:String = "productInfoReceived";
 		public static const PRODUCT_INFO_ERROR:String = "productInfoError";
 
 		public static const RESTORE_INFO_RECEIVED:String = "restoreInfoReceived";
 		
-		public static const IAP_READY:String = "iapReady";
+		public static const IAP_SETUP_SUCCEEDED:String   = "setupSucceeded";
+		public static const IAP_SETUP_FAILED:String      = "setupFailed";
 		
 		// json encoded string (if any)
 		public var data:String;

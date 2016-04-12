@@ -23,9 +23,9 @@ import org.json.JSONObject;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREObject;
+import com.freshplanet.android.iap.util.IabHelper;
+import com.freshplanet.android.iap.util.Purchase;
 import com.freshplanet.inapppurchase.Extension;
-import com.example.android.trivialdrivesample.util.IabHelper;
-import com.example.android.trivialdrivesample.util.Purchase;
 
 public class RemovePurchaseFromQueuePurchase extends BaseFunction
 {

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.example.android.trivialdrivesample.util;
+package com.freshplanet.android.iap.util;
 
 import android.text.TextUtils;
 import android.util.Log;

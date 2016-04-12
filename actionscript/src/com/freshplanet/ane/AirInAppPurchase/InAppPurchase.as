@@ -200,7 +200,7 @@ package com.freshplanet.ane.AirInAppPurchase
 			switch(event.code)
 			{
 				case "IAP_READY":
-					e = new InAppPurchaseEvent(InAppPurchaseEvent.IAP_READY);
+					e = new InAppPurchaseEvent(InAppPurchaseEvent.IAP_SETUP_SUCCEEDED);
 					break;
 				case "PRODUCT_INFO_RECEIVED":
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PRODUCT_INFO_RECEIVED, event.level);
@@ -210,7 +210,7 @@ package com.freshplanet.ane.AirInAppPurchase
 					{
 						_iosPendingPurchases.push(event.level);
 					}
-					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_SUCCESSFULL, event.level);
+					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_SUCCEEDED, event.level);
 					break;
 				case "PURCHASE_ERROR":
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_ERROR, event.level);

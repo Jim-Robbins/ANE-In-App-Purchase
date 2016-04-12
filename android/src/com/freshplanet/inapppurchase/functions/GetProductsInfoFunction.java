@@ -23,10 +23,10 @@ import java.util.List;
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREObject;
+import com.freshplanet.android.iap.util.IabHelper;
+import com.freshplanet.android.iap.util.IabResult;
+import com.freshplanet.android.iap.util.Inventory;
 import com.freshplanet.inapppurchase.Extension;
-import com.example.android.trivialdrivesample.util.IabHelper;
-import com.example.android.trivialdrivesample.util.IabResult;
-import com.example.android.trivialdrivesample.util.Inventory;
 
 public class GetProductsInfoFunction extends BaseFunction
 {
@@ -34,37 +34,45 @@ public class GetProductsInfoFunction extends BaseFunction
     {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory)
         {
-        	if (Extension.context == null)
-    		{
-    			Extension.log("Extension context is null");
-    			return;
-    		}
-        	
-        	if (result.isSuccess())
-    		{
-    			Extension.log("Query inventory successful");
-    			
-    			String data = inventory != null ? inventory.toString() : "";
-    	        Extension.context.dispatchStatusEventAsync("PRODUCT_INFO_RECEIVED", data) ;
-    		}
-    		else
-    		{
-    			Extension.log("Failed to query inventory: " + result.getMessage());
-    			Extension.context.dispatchStatusEventAsync("PRODUCT_INFO_ERROR", "ERROR");
-    		}
+            if (Extension.context == null)
+            {
+                Extension.log("Extension context is null");
+                return;
+            }
+            
+            if (result.isSuccess())
+            {
+                Extension.log("Query inventory successful");
+                
+                if(Extension.inventory == null)
+                {
+                    Extension.inventory = new Inventory();
+                }
+                Extension.inventory.mSkuMap = inventory.mSkuMap;
+                
+                //String data = inventory != null ? inventory.toString() : "";
+                //Extension.context.dispatchStatusEventAsync("PRODUCT_INFO_RECEIVED", data) ;
+                Extension.notifyItemDataLoaded();
+            }
+            else
+            {
+                Extension.log("Failed to query inventory: " + result.getMessage());
+                //Extension.context.dispatchStatusEventAsync("PRODUCT_INFO_ERROR", "ERROR");
+                Extension.notifyItemDataFailed();
+            }
         }
     };
 
-	@Override
-	public FREObject call(FREContext context, FREObject[] args)
-	{
-		super.call(context, args);
-		
-		List<String> skusName = getListOfStringFromFREArray((FREArray)args[0]);
-		List<String> skusSubsName = getListOfStringFromFREArray((FREArray)args[1]);
-		
-		Extension.context.getIabHelper().queryInventoryAsync(true , skusName, skusSubsName, listener);
-		
-		return null;
-	}
+    @Override
+    public FREObject call(FREContext context, FREObject[] args)
+    {
+        super.call(context, args);
+        
+        List<String> skusName = getListOfStringFromFREArray((FREArray)args[0]);
+        List<String> skusSubsName = getListOfStringFromFREArray((FREArray)args[1]);
+        
+        Extension.context.getIabHelper().queryInventoryAsync(true , skusName, skusSubsName, listener);
+        
+        return null;
+    }
 }

@@ -23,12 +23,13 @@ import java.util.Map;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
-import com.example.android.trivialdrivesample.util.IabHelper;
-import com.example.android.trivialdrivesample.util.IabResult;
-import com.example.android.trivialdrivesample.util.Inventory;
-import com.example.android.trivialdrivesample.util.Purchase;
+import com.freshplanet.android.iap.util.IabHelper;
+import com.freshplanet.android.iap.util.IabResult;
+import com.freshplanet.android.iap.util.Inventory;
+import com.freshplanet.android.iap.util.Purchase;
 import com.freshplanet.inapppurchase.functions.GetProductsInfoFunction;
 import com.freshplanet.inapppurchase.functions.InitFunction;
+import com.freshplanet.inapppurchase.functions.MakePurchaseCBFunction;
 import com.freshplanet.inapppurchase.functions.MakePurchaseFunction;
 import com.freshplanet.inapppurchase.functions.MakeSubscriptionFunction;
 import com.freshplanet.inapppurchase.functions.RemovePurchaseFromQueuePurchase;
@@ -54,6 +55,7 @@ public class ExtensionContext extends FREContext implements IabHelper.OnIabSetup
         functionMap.put("initLib", new InitFunction());
         functionMap.put("getProductsInfo", new GetProductsInfoFunction());
         functionMap.put("makePurchase", new MakePurchaseFunction());
+        functionMap.put("makePurchaseCB", new MakePurchaseCBFunction());
         functionMap.put("restoreTransaction", new RestoreTransactionFunction());
         functionMap.put("removePurchaseFromQueue", new RemovePurchaseFromQueuePurchase());
         functionMap.put("makeSubscription", new MakeSubscriptionFunction());
@@ -87,11 +89,11 @@ public class ExtensionContext extends FREContext implements IabHelper.OnIabSetup
         if (result.isSuccess())
         {
             Extension.log("Initialized IAB Helper successfully");
-            Extension.context.dispatchStatusEventAsync("IAP_READY", null);
+            Extension.notifySetupSucceeded("Success:" + result.getMessage());
         }
         else
         {
-            Extension.log("Failed to initialize IAB Helper: " + result.getMessage());
+            Extension.notifySetupFailed("Failed to initialize IAB Helper: " + result.getMessage());
         }
     }
 
@@ -113,12 +115,14 @@ public class ExtensionContext extends FREContext implements IabHelper.OnIabSetup
         {
             Extension.log("Query inventory successful: " + inventory);
             String data = inventory != null ? inventory.toString() : "";
-            dispatchStatusEventAsync("RESTORE_INFO_RECEIVED", data);
+            Extension.notifyItemDataLoaded();
+            // dispatchStatusEventAsync("RESTORE_INFO_RECEIVED", data);
         }
         else
         {
             Extension.log("Failed to query inventory: " + result.getMessage());
-            dispatchStatusEventAsync("PRODUCT_INFO_ERROR", "ERROR");
+            Extension.notifyItemDataFailed();
+            // dispatchStatusEventAsync("PRODUCT_INFO_ERROR", "ERROR");
         }
     }
 }
