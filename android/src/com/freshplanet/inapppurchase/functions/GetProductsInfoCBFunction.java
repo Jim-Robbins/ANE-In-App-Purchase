@@ -26,6 +26,7 @@ public class GetProductsInfoCBFunction implements FREFunction
             for (Map.Entry<String, SkuDetails> entry : Extension.inventory.mSkuMap.entrySet())
             {
                 SkuDetails skuDetails = entry.getValue();
+                Extension.log(skuDetails.toString());
                 products.setObjectAt(i, skuDetails.toFREObject());
                 i++;
             }

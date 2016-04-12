@@ -31,7 +31,7 @@ public class Purchase
     String mItemType;        // ITEM_TYPE_INAPP or ITEM_TYPE_SUBS
     String mOrderId;
     String mPackageName;
-    String mSku;
+    String mProductId;
     long   mPurchaseTime;
     int    mPurchaseState;
     String mDeveloperPayload;
@@ -46,7 +46,7 @@ public class Purchase
         JSONObject o = new JSONObject(mOriginalJson);
         mOrderId = o.optString("orderId");
         mPackageName = o.optString("packageName");
-        mSku = o.optString("productId");
+        mProductId = o.optString("productId");
         mPurchaseTime = o.optLong("purchaseTime");
         mPurchaseState = o.optInt("purchaseState");
         mDeveloperPayload = o.optString("developerPayload");
@@ -69,9 +69,9 @@ public class Purchase
         return mPackageName;
     }
 
-    public String getSku()
+    public String getProductId()
     {
-        return mSku;
+        return mProductId;
     }
 
     public long getPurchaseTime()
@@ -107,7 +107,7 @@ public class Purchase
     public FREObject toFREObject() throws FREWrongThreadException, IllegalStateException, FRETypeMismatchException, FREInvalidObjectException, FREASErrorException, FRENoSuchNameException
     {
 
-        FREObject[] args = {FREObject.newObject(this.mSku), FREObject.newObject(this.mOrderId), FREObject.newObject(this.mItemType), FREObject.newObject(this.mPurchaseTime), FREObject.newObject(this.mPurchaseState), FREObject.newObject(this.mPackageName), FREObject.newObject(this.mDeveloperPayload), FREObject.newObject(this.mToken), FREObject.newObject(this.mSignature), FREObject.newObject(this.mOriginalJson)};
+        FREObject[] args = {FREObject.newObject(this.mProductId), FREObject.newObject(this.mOrderId), FREObject.newObject(this.mItemType), FREObject.newObject(this.mPurchaseTime), FREObject.newObject(this.mPurchaseState), FREObject.newObject(this.mPackageName), FREObject.newObject(this.mDeveloperPayload), FREObject.newObject(this.mToken), FREObject.newObject(this.mSignature), FREObject.newObject(this.mOriginalJson)};
         return FREObject.newObject("com.freshplanet.ane.AirInAppPurchase.PurchaseItem", args);
     }
 

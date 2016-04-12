@@ -86,7 +86,7 @@ public class Inventory
         for (Purchase p : mPurchaseMap.values())
         {
             if (p.getItemType().equals(itemType))
-                result.add(p.getSku());
+                result.add(p.getProductId());
         }
         return result;
     }
@@ -104,7 +104,7 @@ public class Inventory
 
     void addPurchase(Purchase p)
     {
-        mPurchaseMap.put(p.getSku(), p);
+        mPurchaseMap.put(p.getProductId(), p);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class Inventory
                 JSONObject purchaseInfoObject = new JSONObject();
                 purchaseInfoObject.put("signedData", p.getOriginalJson());
                 purchaseInfoObject.put("signature", p.getSignature());
-                purchaseObject.put("productId", p.getSku());
+                purchaseObject.put("productId", p.getProductId());
                 purchaseObject.put("receipt", purchaseInfoObject);
                 purchaseObject.put("receiptType", "GooglePlay");
                 purchaseArray.put(purchaseObject);

@@ -47,10 +47,13 @@ package com.freshplanet.ane.AirInAppPurchase
 		
 		// json encoded string (if any)
 		public var data:String;
+		public var products:Array = [];
+		public var restores:Array = [];
+		public var error:String = "";
+		public var purchaseItem:PurchaseItem = null;
 		
 		public function InAppPurchaseEvent(type:String, data:String = null, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
-			this.data = data;
 			super(type, bubbles, cancelable);
 		}
 	}

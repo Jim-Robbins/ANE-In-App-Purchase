@@ -27,6 +27,7 @@ import com.freshplanet.android.iap.util.IabHelper;
 import com.freshplanet.android.iap.util.IabResult;
 import com.freshplanet.android.iap.util.Inventory;
 import com.freshplanet.android.iap.util.Purchase;
+import com.freshplanet.inapppurchase.functions.GetProductsInfoCBFunction;
 import com.freshplanet.inapppurchase.functions.GetProductsInfoFunction;
 import com.freshplanet.inapppurchase.functions.InitFunction;
 import com.freshplanet.inapppurchase.functions.MakePurchaseCBFunction;
@@ -34,6 +35,7 @@ import com.freshplanet.inapppurchase.functions.MakePurchaseFunction;
 import com.freshplanet.inapppurchase.functions.MakeSubscriptionFunction;
 import com.freshplanet.inapppurchase.functions.RemovePurchaseFromQueuePurchase;
 import com.freshplanet.inapppurchase.functions.RestoreTransactionFunction;
+import com.freshplanet.inapppurchase.functions.RestoreTransactionsCBFunction;
 
 public class ExtensionContext extends FREContext implements IabHelper.OnIabSetupFinishedListener, IabHelper.OnConsumeFinishedListener, IabHelper.QueryInventoryFinishedListener
 {
@@ -54,9 +56,11 @@ public class ExtensionContext extends FREContext implements IabHelper.OnIabSetup
 
         functionMap.put("initLib", new InitFunction());
         functionMap.put("getProductsInfo", new GetProductsInfoFunction());
+        functionMap.put("getProductsInfoCB", new GetProductsInfoCBFunction());
         functionMap.put("makePurchase", new MakePurchaseFunction());
         functionMap.put("makePurchaseCB", new MakePurchaseCBFunction());
         functionMap.put("restoreTransaction", new RestoreTransactionFunction());
+        functionMap.put("restoreTransactionCB", new RestoreTransactionsCBFunction());
         functionMap.put("removePurchaseFromQueue", new RemovePurchaseFromQueuePurchase());
         functionMap.put("makeSubscription", new MakeSubscriptionFunction());
 
@@ -114,8 +118,15 @@ public class ExtensionContext extends FREContext implements IabHelper.OnIabSetup
         if (result.isSuccess())
         {
             Extension.log("Query inventory successful: " + inventory);
-            String data = inventory != null ? inventory.toString() : "";
-            Extension.notifyItemDataLoaded();
+            if (Extension.inventory == null)
+            {
+                Extension.inventory = new Inventory();
+            }
+
+            Extension.inventory.mPurchaseMap = inventory.mPurchaseMap;
+
+            // String data = inventory != null ? inventory.toString() : "";
+            Extension.notifyRestoreSucceeded();
             // dispatchStatusEventAsync("RESTORE_INFO_RECEIVED", data);
         }
         else

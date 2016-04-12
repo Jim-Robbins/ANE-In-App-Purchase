@@ -29,9 +29,10 @@ import com.adobe.fre.FREWrongThreadException;
 public class SkuDetails
 {
     String mItemType;
-    String mSku;
+    String mProductId;
     String mType;
     String mPrice;
+    String mPriceCurrencyCode;
     String mTitle;
     String mDescription;
     String mJson;
@@ -46,16 +47,17 @@ public class SkuDetails
         mItemType = itemType;
         mJson = jsonSkuDetails;
         JSONObject o = new JSONObject(mJson);
-        mSku = o.optString("productId");
+        mProductId = o.optString("productId");
         mType = o.optString("type");
         mPrice = o.optString("price");
+        mPriceCurrencyCode = o.optString("price_currency_code");
         mTitle = o.optString("title");
         mDescription = o.optString("description");
     }
 
     public String getSku()
     {
-        return mSku;
+        return mProductId;
     }
 
     public String getType()
@@ -66,6 +68,11 @@ public class SkuDetails
     public String getPrice()
     {
         return mPrice;
+    }
+
+    public String getPriceCurrencyCode()
+    {
+        return mPriceCurrencyCode;
     }
 
     public String getTitle()
@@ -85,13 +92,13 @@ public class SkuDetails
 
     public FREObject toFREObject() throws FREWrongThreadException, IllegalStateException, FRETypeMismatchException, FREInvalidObjectException, FREASErrorException, FRENoSuchNameException
     {
-        FREObject[] args = {FREObject.newObject(this.mSku), FREObject.newObject(this.mType), FREObject.newObject(this.mPrice), FREObject.newObject(this.mTitle), FREObject.newObject(this.mDescription), FREObject.newObject(this.mItemType)};
+        FREObject[] args = {FREObject.newObject(this.mProductId), FREObject.newObject(this.mType), FREObject.newObject(this.mPrice), FREObject.newObject(this.mPriceCurrencyCode), FREObject.newObject(this.mTitle), FREObject.newObject(this.mDescription)};
         return FREObject.newObject("com.freshplanet.ane.AirInAppPurchase.ItemDetails", args);
     }
 
     @Override
     public String toString()
     {
-        return "SkuDetails:" + mJson;
+        return "Product Details:" + mJson;
     }
 }

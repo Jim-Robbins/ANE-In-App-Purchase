@@ -199,39 +199,41 @@ package com.freshplanet.ane.AirInAppPurchase
 			var e:InAppPurchaseEvent;
 			switch(event.code)
 			{
-				case "IAP_READY":
+				case InAppPurchaseEvent.IAP_SETUP_SUCCEEDED:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.IAP_SETUP_SUCCEEDED);
 					break;
-				case "PRODUCT_INFO_RECEIVED":
-					e = new InAppPurchaseEvent(InAppPurchaseEvent.PRODUCT_INFO_RECEIVED, event.level);
+				case InAppPurchaseEvent.PRODUCT_INFO_RECEIVED:
+					var products:Array = extCtx.call("getProductsInfoCB") as Array;
+					e = new InAppPurchaseEvent(InAppPurchaseEvent.PRODUCT_INFO_RECEIVED);
+					e.products = products;
 					break;
-				case "PURCHASE_SUCCESSFUL":
-					if (Capabilities.manufacturer.indexOf("iOS") > -1)
-					{
-						_iosPendingPurchases.push(event.level);
-					}
-					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_SUCCEEDED, event.level);
+				case InAppPurchaseEvent.PURCHASE_SUCCEEDED:
+					var purchaseItem:PurchaseItem = extCtx.call("makePurchaseCB") as PurchaseItem;
+					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_SUCCEEDED);
+					e.purchaseItem = purchaseItem;
 					break;
-				case "PURCHASE_ERROR":
+				case InAppPurchaseEvent.PURCHASE_ERROR:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_ERROR, event.level);
 					break;
-				case "PURCHASE_ENABLED":
+				case InAppPurchaseEvent.PURCHASE_ENABLED:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_ENABLED, event.level);
 					break;
-				case "PURCHASE_DISABLED":
+				case InAppPurchaseEvent.PURCHASE_DISABLED:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PURCHASE_DISABLED, event.level);
 					break;
-				case "PRODUCT_INFO_ERROR":
+				case InAppPurchaseEvent.PRODUCT_INFO_ERROR:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.PRODUCT_INFO_ERROR);
 					break;
-				case "SUBSCRIPTION_ENABLED":
+				case InAppPurchaseEvent.SUBSCRIPTION_ENABLED:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.SUBSCRIPTION_ENABLED);
 					break;
-				case "SUBSCRIPTION_DISABLED":
+				case InAppPurchaseEvent.SUBSCRIPTION_DISABLED:
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.SUBSCRIPTION_DISABLED);
 					break;
-				case "RESTORE_INFO_RECEIVED":
+				case InAppPurchaseEvent.RESTORE_INFO_RECEIVED:
+					var restores:Array = extCtx.call("restoreTransactionCB") as Array;
 					e = new InAppPurchaseEvent(InAppPurchaseEvent.RESTORE_INFO_RECEIVED, event.level);
+					e.restores = restores;
 					break;
 				default:
 				

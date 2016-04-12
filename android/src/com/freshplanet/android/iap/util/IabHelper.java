@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.vending.billing.IInAppBillingService;
+import com.freshplanet.inapppurchase.Extension;
 
 /**
  * Provides convenience methods for in-app billing. You can create one instance of this
@@ -424,14 +425,14 @@ public class IabHelper
                     logError("Item " + sku + "is owned!!");
                     result = new IabResult(response, "Item " + sku + "is owned!!");
 
-                    // IapExtension.notifyPurchaseItemIsOwned();
+                    Extension.notifyPurchaseItemIsOwned();
                 }
                 else
                 {
                     logError("Unable to buy item, Error response: " + getResponseDesc(response));
 
                     result = new IabResult(response, "Unable to buy item");
-                    // IapExtension.notifyPurchaseItemInvalid();
+                    Extension.notifyPurchaseItemInvalid();
                 }
 
                 logError("Unable to buy item, Error response: " + getResponseDesc(response));
@@ -534,7 +535,7 @@ public class IabHelper
             try
             {
                 purchase = new Purchase(mPurchasingItemType, purchaseData, dataSignature);
-                String sku = purchase.getSku();
+                String sku = purchase.getProductId();
 
                 // Verify signature
                 if (!Security.verifyPurchase(mSignatureBase64, purchaseData, dataSignature))
@@ -764,7 +765,7 @@ public class IabHelper
         try
         {
             String token = itemInfo.getToken();
-            String sku = itemInfo.getSku();
+            String sku = itemInfo.getProductId();
             if (token == null || token.equals(""))
             {
                 logError("Can't consume " + sku + ". No token.");
@@ -869,7 +870,7 @@ public class IabHelper
                     try
                     {
                         consume(purchase);
-                        results.add(new IabResult(BILLING_RESPONSE_RESULT_OK, "Successful consume of sku " + purchase.getSku()));
+                        results.add(new IabResult(BILLING_RESPONSE_RESULT_OK, "Successful consume of sku " + purchase.getProductId()));
                     }
                     catch (IabException ex)
                     {
